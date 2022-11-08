@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
+<body style="background: seagreen">
 
 <h3>Delete Customer</h3>
-<form action="/delete" method="post" th:object="${customer}">
+<form action="/customer/delete" method="post" th:object="${customer}">
     <table>
         <tr>
-            <td><input type="hidden" th:field="*{name}"/></td>
+
+    <td ><input type="text" th:field="*{name}"></td>
+    <td hidden><input type="text" th:field="*{id}"/></td>
+
+
+
 
         </tr>
     </table>

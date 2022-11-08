@@ -1,9 +1,9 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.customer.CustomerType;
+import com.example.demo.model.facility.FacilityType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ICustomerTypeRepository extends JpaRepository<CustomerType,Integer> {
+public interface IFacilityTypeRepository extends JpaRepository<FacilityType,Integer> {
 }

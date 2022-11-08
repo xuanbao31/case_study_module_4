@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="background: seagreen">
+
+<h2>Delete Facility</h2>
+<form action="/facility/delete" method="post" th:object="${facility}">
+    <table>
+        <tr>
+            <td><h2>Ban Co Muon Xoa</h2></td>
+            <td ><input type="text" th:field="*{name}"></td>
+            <td hidden><input type="text" th:field="*{id}"/></td>
+        </tr>
+    </table>
+
+    <a href="/facility/list" class="btn btn-primary">Thui Kh Xoa Nua</a>
+    <button type="submit">Delete</button>
+</form>
+</body>
+</html>
