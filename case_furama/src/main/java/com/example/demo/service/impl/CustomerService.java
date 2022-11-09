@@ -38,5 +38,10 @@ public class CustomerService implements ICustomerService {
         return customerRepository.findById(id).get();
     }
 
+    @Override
+    public Page<Customer> findByName(Pageable pageable, String name, String email, String customerType) {
+        return customerRepository.findByBlogNameEmailAndCustomerTypeContaining(pageable,name,email,customerType);
+    }
+
 
 }

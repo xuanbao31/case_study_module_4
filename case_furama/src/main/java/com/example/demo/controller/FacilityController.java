@@ -1,12 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.facility.Facility;
+import com.example.demo.model.facility.FacilityDto;
 import com.example.demo.model.facility.FacilityType;
 import com.example.demo.model.facility.RentType;
 import com.example.demo.service.IFacilityService;
 import com.example.demo.service.IFacilityTypeService;
 import com.example.demo.service.IRentTypeService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Entity;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -39,21 +42,23 @@ public class FacilityController {
 
     @GetMapping("/createVilla")
     public String addVilla(Model model) {
-        model.addAttribute("facility", new Facility());
+        model.addAttribute("facilityDto", new FacilityDto());
         model.addAttribute("facilityType", facilityTypeService.findAll());
         model.addAttribute("rentType", rentTypeService.findAll());
         return "/facility/villa";
     }
+
     @GetMapping("/createHouse")
     public String addHouse(Model model) {
-        model.addAttribute("facility", new Facility());
+        model.addAttribute("facilityDto", new FacilityDto());
         model.addAttribute("facilityType", facilityTypeService.findAll());
         model.addAttribute("rentType", rentTypeService.findAll());
         return "/facility/house";
     }
+
     @GetMapping("/createRoom")
     public String addRoom(Model model) {
-        model.addAttribute("facility", new Facility());
+        model.addAttribute("facilityDto", new FacilityDto());
         model.addAttribute("facilityType", facilityTypeService.findAll());
         model.addAttribute("rentType", rentTypeService.findAll());
         return "/facility/room";
@@ -61,7 +66,9 @@ public class FacilityController {
 
 
     @PostMapping("/save")
-    public String save(@ModelAttribute Facility facility) {
+    public String save(@ModelAttribute @Valid FacilityDto facilityDto) {
+        Facility facility = new Facility();
+        BeanUtils.copyProperties(facilityDto, facility);
         facilityService.save(facility);
         return "redirect:/facility/list";
     }
@@ -78,14 +85,19 @@ public class FacilityController {
 
     @GetMapping("{id}/edit")
     public String edit(@PathVariable int id, Model model) {
-        model.addAttribute("facility", facilityService.findById(id));
+        Facility facility = facilityService.findById(id);
+        FacilityDto facilityDto = new FacilityDto();
+        BeanUtils.copyProperties(facility, facilityDto);
+        model.addAttribute("facilityDto",facilityDto);
         model.addAttribute("facilityType", facilityTypeService.findAll());
         model.addAttribute("rentType", rentTypeService.findAll());
         return "/facility/edit";
     }
 
     @PostMapping("/edit")
-    public String edit(@ModelAttribute Facility facility) {
+    public String edit(@ModelAttribute FacilityDto facilityDto) {
+        Facility facility = new Facility();
+        BeanUtils.copyProperties(facilityDto, facility);
         facilityService.save(facility);
         return "redirect:/facility/list";
     }

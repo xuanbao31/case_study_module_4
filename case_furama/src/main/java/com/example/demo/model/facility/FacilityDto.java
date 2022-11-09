@@ -1,15 +1,7 @@
 package com.example.demo.model.facility;
 
-import com.example.demo.model.contract.Contract;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+public class FacilityDto {
 
-import javax.persistence.*;
-import java.util.Set;
-
-@Entity
-public class Facility {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private int area;
@@ -20,22 +12,13 @@ public class Facility {
     private String poolArea;
     private String floors;
     private String facilityFree;
-    @ManyToOne
-    @JoinColumn(name = "facility_type_id", referencedColumnName = "id")
     private FacilityType facilityType;
-    @ManyToOne
-    @JoinColumn(name = "rent_type_id", referencedColumnName = "id")
     private RentType rentType;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "facility")
-    private Set<Contract> contracts;
-
-
-    public Facility() {
+    public FacilityDto() {
     }
 
-    public Facility(int id, String name, int area, double cost, int maxPeople, String standardRoom, String descriptionConvenience, String poolArea, String floors, String facilityFree, FacilityType facilityType, RentType rentType) {
+    public FacilityDto(int id, String name, int area, double cost, int maxPeople, String standardRoom, String descriptionConvenience, String poolArea, String floors, String facilityFree, FacilityType facilityType, RentType rentType) {
         this.id = id;
         this.name = name;
         this.area = area;

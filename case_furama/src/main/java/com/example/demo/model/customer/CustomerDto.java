@@ -1,39 +1,47 @@
 package com.example.demo.model.customer;
 
-import com.example.demo.model.contract.Contract;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
-@Entity
-public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+public class CustomerDto implements Validator {
+
     private Integer id;
+    @NotBlank(message = "Không được để trống nha")
+    @Pattern(regexp = "([\\p{Lu}][\\p{Ll}]{1,8})(\\s([\\p{Lu}]|[\\p{Lu}][\\p{Ll}]{1,10})){0,5}$",
+            message = "Viết hoa ở mỗi chữ cái đầu")
     private String name;
+
+    @NotBlank(message = "Không được để trống nha")
     private String dateOfBirth;
+
+    @NotBlank(message = "Không được để trống nha")
     private Integer gender;
+
+    @NotBlank(message = "Không được để trống")
+    @Pattern(regexp = "^([0-9]{9}|[0-9]{12})$",
+            message = "Nhập Lại Đi Bạn")
     private String idCard;
+    @NotBlank(message = "Không được để trống")
+    @Pattern(regexp = "/((09|03|07|08|05)+([0-9]{8})\\b)/g")
     private String phoneNumber;
     private String email;
     private String address;
 
     private Integer status;
-
-    @ManyToOne
-    @JoinColumn(name = "customer_type_id", referencedColumnName = "id")
     private CustomerType customerType;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "customer")
-    private Set<Contract>contracts;
-
-
-    public Customer() {
+    public CustomerDto() {
     }
 
-    public Customer(Integer id, String name, String dateOfBirth, Integer gender, String idCard, String phoneNumber, String email, String address, Integer status, CustomerType customerType, Set<Contract> contracts) {
+    public CustomerDto(Integer id, String name, String dateOfBirth, Integer gender, String idCard, String phoneNumber, String email, String address, Integer status, CustomerType customerType) {
         this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -44,15 +52,6 @@ public class Customer {
         this.address = address;
         this.status = status;
         this.customerType = customerType;
-        this.contracts = contracts;
-    }
-
-    public Set<Contract> getContracts() {
-        return contracts;
-    }
-
-    public void setContracts(Set<Contract> contracts) {
-        this.contracts = contracts;
     }
 
     public Integer getId() {
@@ -133,5 +132,15 @@ public class Customer {
 
     public void setCustomerType(CustomerType customerType) {
         this.customerType = customerType;
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return false;
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+
     }
 }
